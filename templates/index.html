@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -230,3 +231,237 @@
   </script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Магазин Рыболов — всё для рыбалки</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+  <header>
+      <div class="logo">
+        <svg viewBox="0 0 80 80" fill="none"><ellipse cx="40" cy="56" rx="17" ry="11" fill="#28d8f2" fill-opacity=".85"/><ellipse cx="41" cy="46" rx="23" ry="9" fill="#61e2ff"/><ellipse cx="40" cy="34" rx="32" ry="19" fill="#1db9ea" fill-opacity=".71"/><path d="M22 56Q28 34 40 16Q52 34 58 56" stroke="#fff" stroke-width="4" fill="none"/><ellipse cx="40" cy="20" rx="5" ry="9" fill="#24469c"/></svg>
+        Рыболов
+      </div>
+      <nav class="nav-menu">
+        <a href="#" class="active">Главная</a>
+        <a href="#products">Товары</a>
+        <a href="#contacts-block">Контакты</a>
+      </nav>
+  </header>
+  <section class="hero">
+     <h1>Всё для рыбалки и туризма</h1>
+     <p>г. Тула, ул. Каминского, 12</p>
+     <div class="about">У нас вы найдете всё — от снастей до снаряжения и аксессуаров. Поддержим профессионалов и поможем новичкам! Работаем для любителей настоящего активного отдыха на воде и природе.</div>
+  </section>
+  <!-- Панель фильтров -->
+  <div class="filters-panel" id="filters-panel">
+    <div class="filters-container">
+      <div class="search-box">
+        <input type="text" id="search-input" placeholder="Поиск товаров..." />
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.35-4.35"/>
+        </svg>
+      </div>
+      <div class="category-filters">
+        <button class="filter-btn active" data-category="all">Все товары</button>
+        {% if products_by_cat %}
+          {% for cat, products in products_by_cat.items() %}
+            <button class="filter-btn" data-category="{{cat}}">{{cat}}</button>
+          {% endfor %}
+        {% endif %}
+      </div>
+      <div class="filters-info">
+        <span id="products-count">Найдено: <span id="count-number">0</span> товаров</span>
+        <button class="reset-filters" onclick="resetFilters()">Сбросить</button>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <h2 id="products">Товары</h2>
+    {% if products_by_cat %}
+      {% for cat, products in products_by_cat.items() %}
+        <div class="category-title" data-category="{{cat}}">{{cat}}</div>
+        <div class="products-grid" data-category="{{cat}}">
+          {% for prod in products %}
+          <div class="product-card" data-name="{{prod['name']|lower}}" data-category="{{cat}}">
+            <img src="{{prod['image'] or url_for('static', filename='default_product.png')}}" alt="{{prod['name']}}" class="product-img">
+            <div class="product-info">
+              <h3>{{prod['name']}}</h3>
+              <div class="product-price">{{'{:,.0f}'.format(prod['price'])}} ₽</div>
+              <form action="https://auth.robokassa.ru/Merchant/Index.aspx" method="POST" target="_blank">
+                <input type="hidden" name="MerchantLogin" value="demo" />
+                <input type="hidden" name="OutSum" value="{{prod['price']}}" />
+                <input type="hidden" name="InvId" value="{{prod['id']}}" />
+                <input type="hidden" name="Description" value="{{prod['name']}}" />
+                <input type="hidden" name="SignatureValue" value="" />
+                <button class="buy-btn" type="submit">Купить</button>
+              </form>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="products-placeholder">Товары скоро появятся на сайте. Следите за обновлениями!</div>
+    {% endif %}
+  </main>
+  <section id="contacts-block">
+    <h2>Контакты</h2>
+    <div class="contacts-flex">
+      <div class="contact-block">
+        <svg fill="#61e2ff" viewBox="0 0 28 28"><circle cx="14" cy="14" r="13" fill="#101f2e"/><path d="M7.6 10.5l4.89 7.3a2 2 0 0 0 3.02.25l5.03-5.07a1 1 0 0 0 -1.48-1.36l-4.11 4.13-4.13-6.15a1 1 0 1 0 -1.66 1.1z" fill="#61e2ff"/></svg>
+        <div class="info"><b>+7 (4872) 55-14-79</b><br>Телефон для связи</div>
+      </div>
+      <div class="contact-block">
+        <svg fill="#5ad6f8" viewBox="0 0 28 28"><circle cx="14" cy="14" r="13" fill="#101f2e"/><path d="M8.4 10.4c.44-.35 1.11-.8 2.07 0l4.31 3.52a1 1 0 0 0 1.31.04l2.13-1.68c.89-.7 1.62-.35 2.02 0 .38.32.46.94 0 1.36l-5.58 4.49c-.37.3-.93.3-1.29 0l-5.56-4.49c-.44-.36-.36-1.01 0-1.35z" fill="#5ad6f8"/></svg>
+        <div class="info"><b>info@rybolov.tula</b><br>E-mail для заказов</div>
+      </div>
+      <div class="contact-block">
+        <svg fill="#21d091" viewBox="0 0 28 28"><circle cx="14" cy="14" r="13" fill="#101f2e"/><path d="M14 7c-2.7 0-5 2.07-5 4.6 0 1.57.61 3.01 1.5 4.06L14 21l3.5-5.34c.9-1.05 1.5-2.49 1.5-4.06C19 9.07 16.7 7 14 7zm0 2c1.74 0 3.15 1.27 3.15 2.85 0 1.13-.5 2.22-1.38 3.05L14 17.12l-1.77-2.2C11.35 12.07 11 11.02 11 9.85 11 8.27 12.41 9 14 9z" fill="#21d091"/></svg>
+        <div class="info"><b>ул. Каминского, 12</b><br>г. Тула, ежедневно 10:00–19:00</div>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <div class="footer-content">&copy; 2025 Магазин "Рыболов" — любимое место для рыбаков в Туле</div>
+    <button class="scroll-to-top" onclick="scrollToTop()" title="Наверх">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 19V5M5 12l7-7 7 7"/>
+      </svg>
+    </button>
+  </footer>
+  <script>
+    function scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+
+    // Фильтры товаров
+    let currentCategory = 'all';
+    let currentSearch = '';
+
+    function filterProducts() {
+      const searchTerm = document.getElementById('search-input').value.toLowerCase();
+      const category = currentCategory;
+      
+      currentSearch = searchTerm;
+      
+      const allProducts = document.querySelectorAll('.product-card');
+      const allCategories = document.querySelectorAll('.category-title, .products-grid');
+      let visibleCount = 0;
+
+      allProducts.forEach(product => {
+        const productName = product.getAttribute('data-name');
+        const productCategory = product.getAttribute('data-category');
+        
+        const matchesSearch = searchTerm === '' || productName.includes(searchTerm);
+        const matchesCategory = category === 'all' || productCategory === category;
+        
+        if (matchesSearch && matchesCategory) {
+          product.style.display = 'flex';
+          visibleCount++;
+        } else {
+          product.style.display = 'none';
+        }
+      });
+
+      // Показываем/скрываем категории
+      allCategories.forEach(element => {
+        const elementCategory = element.getAttribute('data-category');
+        const hasVisibleProducts = Array.from(allProducts).some(product => {
+          const productCategory = product.getAttribute('data-category');
+          const productName = product.getAttribute('data-name');
+          const matchesSearch = searchTerm === '' || productName.includes(searchTerm);
+          const matchesCategory = category === 'all' || productCategory === category;
+          return productCategory === elementCategory && matchesSearch && matchesCategory && product.style.display !== 'none';
+        });
+        
+        element.style.display = hasVisibleProducts ? 'block' : 'none';
+      });
+
+      // Принудительно восстанавливаем сетку
+      setTimeout(() => {
+        const grids = document.querySelectorAll('.products-grid');
+        grids.forEach(grid => {
+          grid.style.display = 'grid';
+          grid.style.gridTemplateColumns = 'repeat(3, 1fr)';
+        });
+      }, 10);
+
+      // Обновляем счетчик
+      document.getElementById('count-number').textContent = visibleCount;
+    }
+
+    function resetFilters() {
+      document.getElementById('search-input').value = '';
+      currentCategory = 'all';
+      currentSearch = '';
+      
+      // Сбрасываем активную кнопку
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelector('[data-category="all"]').classList.add('active');
+      
+      filterProducts();
+    }
+
+    // Показ/скрытие панели фильтров
+    function toggleFiltersPanel() {
+      const panel = document.getElementById('filters-panel');
+      const scrollY = window.scrollY;
+      
+      if (scrollY > 200) {
+        panel.classList.add('visible');
+      } else {
+        panel.classList.remove('visible');
+      }
+    }
+
+    // Принудительное восстановление сетки
+    function forceGridLayout() {
+      const grids = document.querySelectorAll('.products-grid');
+      grids.forEach(grid => {
+        grid.style.display = 'grid';
+        grid.style.gridTemplateColumns = 'repeat(3, 1fr)';
+        grid.style.gap = '30px 22px';
+      });
+    }
+
+    // Инициализация
+    document.addEventListener('DOMContentLoaded', function() {
+      // Принудительно устанавливаем сетку
+      forceGridLayout();
+      
+      // Поиск
+      document.getElementById('search-input').addEventListener('input', filterProducts);
+      
+      // Фильтры по категориям
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          currentCategory = this.getAttribute('data-category');
+          filterProducts();
+        });
+      });
+      
+      // Показ панели при скролле
+      window.addEventListener('scroll', toggleFiltersPanel);
+      
+      // Периодическое восстановление сетки
+      setInterval(forceGridLayout, 1000);
+      
+      // Инициализация счетчика
+      filterProducts();
+    });
+  </script>
+</body>
+</html>
+>>>>>>> 63f4646d109376eec9376909fe0d82dddb2648f3
